@@ -68,10 +68,10 @@
         <div id="menu">
             <h2>Animales de la granja</h2>
             <button id="2_click" onclick="showEmoticon('🐄', 2)">🐄</button>
-            <button id="1_clicks" disabled onclick="showEmoticon('🐓', 1)">🐓</button>
-            <button id="1000_clicks_" disabled onclick="showEmoticon('🐖', 1000)">🐖</button>
-            <button id="2000_clicks" disabled onclick="showEmoticon('🦆', 2000)">🦆</button>
-            <button id="5000_clicks" disabled onclick="showEmoticon('🦕', 5000)">🦕</button>
+            <button id="10_clicks" onclick="showEmoticon('🐓', 1)">🐓</button>
+            <button id="1000_clicks_" onclick="showEmoticon('🐖', 1000)">🐖</button>
+            <button id="2000_clicks" onclick="showEmoticon('🦆', 2000)">🦆</button>
+            <button id="5000_clicks"onclick="showEmoticon('🦕', 5000)">🦕</button>
         </div>
     </div>
 
@@ -84,7 +84,7 @@
 
         // AÑADE UN CLICK AL EJECUTAR LA FUNCIÓN
         function count_click_add() {
-            count_click += 1;
+            count_click += 0,5;
             // Actualiza el contenido del elemento con id "count_click" al hacer clic
             $("#count_click").text(count_click);
 
