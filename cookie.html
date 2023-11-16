@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Incluye la biblioteca jQuery desde un CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #canvasContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #emoticonCanvas {
+            border: 1px solid #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #clickButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        #menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #f1f1f1;
+            padding: 10px;
+            z-index: 2;
+        }
+
+        #menu button {
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        #count_click {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvasContainer">
+        <canvas id="emoticonCanvas"></canvas>
+        <div id="count_click"></div>
+        <button id="clickButton" name="count_click" onclick="count_click_add()">AÑADIR CLICK</button>
+        <div id="menu">
+            <h2>Animales de la granja</h2>
+            <button id="2_click" onclick="showEmoticon('🐄', 2)">🐄</button>
+            <button id="1_clicks" disabled onclick="showEmoticon('🐓', 1)">🐓</button>
+            <button id="1000_clicks_" disabled onclick="showEmoticon('🐖', 1000)">🐖</button>
+            <button id="2000_clicks" disabled onclick="showEmoticon('🦆', 2000)">🦆</button>
+            <button id="5000_clicks" disabled onclick="showEmoticon('🦕', 5000)">🦕</button>
+        </div>
+    </div>
+
+    <script>
+        // PONE EL CONTADOR A 0
+        var count_click = 0;
+
+        // Array para almacenar las posiciones de los emoticonos
+        var emoticonPositions = [];
+
+        // AÑADE UN CLICK AL EJECUTAR LA FUNCIÓN
+        function count_click_add() {
+            count_click += 1;
+            // Actualiza el contenido del elemento con id "count_click" al hacer clic
+            $("#count_click").text(count_click);
+
+            // Habilita o deshabilita el botón "AÑADIR CLICK" según los clics disponibles
+            $("#clickButton").prop("disabled", count_click < 1);
+        }
+
+        // Función para dibujar el emoticono en una posición específica dentro del canvas
+        function drawEmoticon(emoticon, x, y) {
+            var canvas = document.getElementById("emoticonCanvas");
+            var context = canvas.getContext("2d");
+
+            // Dibuja el emoticono en la posición específica
+            context.font = "30px Arial";
+            context.fillText(emoticon, x, y + 30); // Centrar verticalmente
+        }
+
+        // Función para mostrar el emoticono en el canvas cuando se hace clic en el botón
+        function showEmoticon(emoticon, requiredClicks) {
+            if (count_click >= requiredClicks) {
+                count_click -= requiredClicks; // Resta los clics necesarios
+                $("#count_click").text(count_click); // Actualiza el contador de clics
+
+                // Genera posiciones aleatorias para X e Y dentro del canvas
+                var randomX = Math.random() * (window.innerWidth - 30); // 30 es el ancho del emoticono
+                var randomY = Math.random() * (window.innerHeight - 30); // 30 es la altura del emoticono
+
+                // Almacena la posición del emoticono en el array
+                emoticonPositions.push({ x: randomX, y: randomY });
+
+                // Dibuja todos los emoticonos en las posiciones almacenadas
+                for (var i = 0; i < emoticonPositions.length; i++) {
+                    drawEmoticon(emoticon, emoticonPositions[i].x, emoticonPositions[i].y);
+                }
+
+                // Habilita el botón después de mostrar el emoticono
+                $("#" + requiredClicks + "_clicks").prop("disabled", false);
+            }
+        }
+
+        // AÑADE A TODOS LOS BOTONES CON EL NAME count_click QUE AL SER PULSADOS EJECUTEN EL CONTADOR
+        $(document).ready(function () {
+            $("button[name='count_click']").click(function () {
+                count_click_add();
+            });
+
+            // Establece el ancho y alto del canvas según el tamaño de la ventana
+            var canvas = document.getElementById("emoticonCanvas");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+
+</html>
